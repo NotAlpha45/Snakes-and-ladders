@@ -114,6 +114,7 @@ class Player:
         """
         # self.canvas.image = self.image
         self.canvas.create_image(self.__x, self.__y, image=self.image)
+        # self.canvas.move(self.image, self.__x, self.__y)
 
     def move(self, dice_val):
         """
@@ -123,6 +124,7 @@ class Player:
         self.__remaining_move = dice_val
         skip_a_move = False
 
+        # Regular sequential move of the player.
         while self.__remaining_move > 0:
 
             if self.__row_val == 1 and block_number(self.__x, self.__y) == 5:
@@ -156,12 +158,20 @@ class Player:
             if self.__row_val == 5 and block_number(self.__x, self.__y) == 25:
                 self.has_won = True
 
-            if (self.__row_val == 1 or self.__row_val == 3 or self.__row_val == 5) and (
-                skip_a_move == False
+            # If the row number is 1, 3 or 5 and there isn't a skipping move and the player
+            # will be in the board after the move, then the player moves in foreward direction.
+            if (
+                (self.__row_val == 1 or self.__row_val == 3 or self.__row_val == 5)
+                and skip_a_move == False
+                and in_position(self.__x + 82, self.__y, 0, 0, 412, 412) == True
             ):
                 self.__x += 82
 
-            if (self.__row_val == 2 or self.__row_val == 4) and (skip_a_move == False):
+            if (
+                (self.__row_val == 2 or self.__row_val == 4)
+                and (skip_a_move == False)
+                and in_position(self.__x - 82, self.__y, 0, 0, 412, 412) == True
+            ):
                 self.__x -= 82
 
             skip_a_move = False
